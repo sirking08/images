@@ -123,7 +123,7 @@ class theme_klassroom_core_renderer extends \core_renderer {
         $content = '';
         foreach ($menu->get_children() as $item) {
             $context = $item->export_for_template($this);
-            $content .= $this->render_from_template('theme_fordson/activitygroups', $context);
+            $content .= $this->render_from_template('theme_klassroom/activitygroups', $context);
         }
         return $content;
     }
@@ -132,7 +132,7 @@ class theme_klassroom_core_renderer extends \core_renderer {
         $menu = new custom_menu();
         $context = $this->page->context;
         if (isset($COURSE->id) && $COURSE->id > 1) {
-            $branchtitle = get_string('courseactivities', 'theme_fordson');
+            $branchtitle = get_string('courseactivities', 'theme_klassroom');
             $branchlabel = $branchtitle;
             $branchurl = new moodle_url('#');
             $branch = $menu->add($branchlabel, $branchurl, $branchtitle, 10002);
