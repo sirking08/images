@@ -117,6 +117,42 @@ class theme_klassroom_core_renderer extends \core_renderer {
     }
 }
 //from fordson theme
+//courseactivities_menu required in teacherdash
+    protected function render_courseactivities_menu(custom_menu $menu) {
+        global $CFG;
+        $content = '';
+        foreach ($menu->get_children() as $item) {
+            $context = $item->export_for_template($this);
+            $content .= $this->render_from_template('theme_fordson/activitygroups', $context);
+        }
+        return $content;
+    }
+    public function courseactivities_menu() {
+        global $PAGE, $COURSE, $OUTPUT, $CFG;
+        $menu = new custom_menu();
+        $context = $this->page->context;
+        if (isset($COURSE->id) && $COURSE->id > 1) {
+            $branchtitle = get_string('courseactivities', 'theme_fordson');
+            $branchlabel = $branchtitle;
+            $branchurl = new moodle_url('#');
+            $branch = $menu->add($branchlabel, $branchurl, $branchtitle, 10002);
+            $data = theme_fordson_get_course_activities();
+            foreach ($data as $modname => $modfullname) {
+                if ($modname === 'resources') {
+                    $branch->add($modfullname, new moodle_url('/course/resources.php', array(
+                        'id' => $PAGE->course->id
+                    )));
+                }
+                else {
+                    $branch->add($modfullname, new moodle_url('/mod/' . $modname . '/index.php', array(
+                        'id' => $PAGE->course->id
+                    )));
+                }
+            }
+        }
+        return $this->render_courseactivities_menu($menu);
+    }
+	
     public function teacherdashmenu() {
         global $PAGE, $COURSE, $CFG, $DB, $OUTPUT;
         $course = $this->page->course;
